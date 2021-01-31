@@ -6,6 +6,8 @@ import { Wrapper } from "../components/Wrapper";
 import { useLoginMutation } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import { useRouter } from 'next/router'
+import { withUrqlClient } from "next-urql";
+import { createUrqlClient } from "../utils/crateUrqlClient";
 
 interface registerProps {}
 
@@ -57,4 +59,4 @@ const Login: React.FC<registerProps> = ({}) => {
   );
 };
 
-export default Login;
+export default withUrqlClient(createUrqlClient)(Login);
