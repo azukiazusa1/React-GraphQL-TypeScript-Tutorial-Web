@@ -13,14 +13,14 @@ interface registerProps {}
 
 const Login: React.FC<registerProps> = ({}) => {
   const router = useRouter();
-  const [, register] = useLoginMutation();
+  const [, login] = useLoginMutation();
   return (
     <Wrapper>
       <Formik
         initialValues={{ usernameOrEmail: "", password: "" }}
         onSubmit={async (values, { setErrors }) => {
           console.log(values);
-          const response = await register(values);
+          const response = await login(values);
           if (response.data?.login.errors) {
             setErrors(toErrorMap(response.data.login.errors));
           } else if (response.data?.login.user) {
