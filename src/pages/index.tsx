@@ -8,20 +8,26 @@ import {
   Button,
   Flex,
   Heading,
+  IconButton,
   Link,
   Stack,
   Text,
 } from "@chakra-ui/react";
 import { Layout } from "../components/Layout";
+import { ChevronUpIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { UpdootSection } from "../components/UpdootSection";
 
 const Index = () => {
-  const [variables, setVariables] = useState({ limit: 15, cursor: null as null | string })
+  const [variables, setVariables] = useState({
+    limit: 15,
+    cursor: null as null | string,
+  });
   const [{ data, fetching }] = usePostsQuery({
-    variables
+    variables,
   });
 
   if (!fetching && !data) {
-    return <div>you got no posts for some reason</div>
+    return <div>you got no posts for some reason</div>;
   }
   return (
     <Layout>
@@ -37,22 +43,30 @@ const Index = () => {
       ) : (
         <Stack spacing={8}>
           {data.posts.posts.map((p) => (
-            <Box p={5} shadow="md" borderWidth="1px" key={p.id}>
-              <Heading fontSize="xl">{p.title}</Heading> 
-              posted by {p.creator.username}
-              <Text mt={4}>{p.textSnippet}</Text>
-            </Box>
+            <Flex p={5} shadow="md" borderWidth="1px" key={p.id}>
+              <UpdootSection post={p} />
+              <Box>
+                <Heading fontSize="xl">{p.title}</Heading>
+                posted by {p.creator.username}
+                <Text mt={4}>{p.textSnippet}</Text>
+              </Box>
+            </Flex>
           ))}
         </Stack>
       )}
       {data && data.posts.hasMore ? (
         <Flex>
-          <Button onClick={() => {
-            setVariables({
-              limit: variables.limit,
-              cursor: data.posts.posts[data.posts.posts.length - 1].createdAt
-            })
-          }} isLoading={fetching} m="auto" my={8}>
+          <Button
+            onClick={() => {
+              setVariables({
+                limit: variables.limit,
+                cursor: data.posts.posts[data.posts.posts.length - 1].createdAt,
+              });
+            }}
+            isLoading={fetching}
+            m="auto"
+            my={8}
+          >
             load more
           </Button>
         </Flex>
