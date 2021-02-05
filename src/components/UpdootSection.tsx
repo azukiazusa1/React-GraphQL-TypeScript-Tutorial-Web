@@ -21,6 +21,7 @@ export const UpdootSection: React.FC<UpdootSectionProps> = ({ post }) => {
           });
           setLoadingState('not-loading')
         }}
+        colorScheme={post.voteStatus === 1 ? 'green' : undefined}
         isLoading={loadingState === 'updoot-loading'}
         aria-label="up"
         icon={<ChevronUpIcon size="24px" />}
@@ -35,6 +36,7 @@ export const UpdootSection: React.FC<UpdootSectionProps> = ({ post }) => {
           });
           setLoadingState('not-loading')
         }}
+        colorScheme={post.voteStatus === -1 ? 'red' : undefined}
         isLoading={loadingState === 'downdoot-loading'}
         aria-label="down"
         icon={<ChevronDownIcon size="24px" />}
