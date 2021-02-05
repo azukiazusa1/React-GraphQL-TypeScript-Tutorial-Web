@@ -14,7 +14,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Layout } from "../components/Layout";
-import { ChevronUpIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { UpdootSection } from "../components/UpdootSection";
 
 const Index = () => {
@@ -33,9 +32,6 @@ const Index = () => {
     <Layout>
       <Flex>
         <Heading>LiReddit</Heading>
-        <NextLink href="create-post">
-          <Link ml="auto">create post</Link>
-        </NextLink>
       </Flex>
       <br />
       {!data ? (
@@ -46,7 +42,11 @@ const Index = () => {
             <Flex p={5} shadow="md" borderWidth="1px" key={p.id}>
               <UpdootSection post={p} />
               <Box>
-                <Heading fontSize="xl">{p.title}</Heading>
+                <NextLink href="/post/[id]" as={`/post/${p.id}`}>
+                  <Link>
+                    <Heading fontSize="xl">{p.title}</Heading>
+                  </Link>
+                </NextLink>
                 posted by {p.creator.username}
                 <Text mt={4}>{p.textSnippet}</Text>
               </Box>
