@@ -1,6 +1,6 @@
 import { withUrqlClient } from "next-urql";
 import React, { useState } from "react";
-import { useDeletePostMutation, usePostsQuery } from "../generated/graphql";
+import { useDeletePostMutation, useMeQuery, usePostsQuery } from "../generated/graphql";
 import { createUrqlClient } from "../utils/crateUrqlClient";
 import NextLink from "next/link";
 import {
@@ -16,17 +16,17 @@ import {
 import { Layout } from "../components/Layout";
 import { UpdootSection } from "../components/UpdootSection";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { EditDeletePostButtons } from "../components/EditDeletePostButtons";
 
 const Index = () => {
   const [variables, setVariables] = useState({
     limit: 15,
     cursor: null as null | string,
   });
+  const [{ data: meData }] = useMeQuery()
   const [{ data, fetching }] = usePostsQuery({
     variables,
   });
-
-  const [, deletePost] = useDeletePostMutation();
 
   if (!fetching && !data) {
     return <div>you got no posts for some reason</div>;
@@ -55,29 +55,8 @@ const Index = () => {
                   <Flex align="center">
                     <Text flex={1} mt={4}>
                       {p.textSnippet}
-                    </Text>
-                    <Box ml="auto">
-                      <NextLink href="/post/edit/[id]" as={`/post/edit/${p.id}`}>
-                        <IconButton
-                          as={Link}
-                          mr={4}
-                          ml="auto"
-                          onClick={() => {
-                            deletePost({ id: p.id });
-                          }}
-                          icon={<EditIcon />}
-                          aria-label="Edit post"
-                        />
-                      </NextLink>
-                      <IconButton
-                        ml="auto"
-                        onClick={() => {
-                          deletePost({ id: p.id });
-                        }}
-                        icon={<DeleteIcon />}
-                        aria-label="Delete post"
-                      />
-                    </Box>
+                    </Text>{meData?.me?.id !== p.creator.id ? null : (
+                    <EditDeletePostButtons id={p.id} />)}
                   </Flex>
                 </Box>
               </Flex>
